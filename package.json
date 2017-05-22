@@ -1,6 +1,6 @@
 {
   "name": "HierarchyOnObjectPage",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Allow you to display hierarchy on an objectPage",
   "main": "src/hierarchyOnObjectPage.js",
   "scripts": {
