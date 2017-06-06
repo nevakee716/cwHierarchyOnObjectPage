@@ -18,14 +18,16 @@
     };
     cwCustomerSiteActions.breadCrumbHierarchy = {};
     cwCustomerSiteActions.breadCrumbHierarchy.views = {};
+    cwCustomerSiteActions.breadCrumbHierarchy.history = [];
+
 
     cwCustomerSiteActions.breadCrumbHierarchy.create = function(rootNode){
         var hierarchyList = document.getElementsByClassName('cw-list BreadcrumbHierarchy')[0];
         var title = document.getElementsByClassName('page-title')[0];
         var hierarchy = document.createElement('div');
         var fragment = document.createDocumentFragment();
-
-
+        var titletxt = title.innerText;
+        
         // Store the hierarchy list for the view
         if(cwCustomerSiteActions.breadCrumbHierarchy.views.hasOwnProperty(cwAPI.getCurrentView().cwView + rootNode.object_id)) { 
             hierarchy = cwCustomerSiteActions.breadCrumbHierarchy.views[cwAPI.getCurrentView().cwView + rootNode.object_id];
@@ -45,6 +47,13 @@
         // put the hierarchy on the title
         if(title && hierarchy) {
             title.insertBefore(hierarchy,title.firstChild);
+        }
+
+        cwCustomerSiteActions.breadCrumbHierarchy.hideList();
+        cwCustomerSiteActions.breadCrumbHierarchy.checkHistory(hierarchy);
+
+        if(cwCustomerSiteActions.breadCrumbHierarchy.history.indexOf(titletxt) === -1) {
+            cwCustomerSiteActions.breadCrumbHierarchy.history.push(titletxt);
         }
 
     };
@@ -70,8 +79,9 @@
                     return hierarchy;
                 } else {
                     childUl.hidden = true;
-                    hierarchy.insertBefore(cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(childUl.childElementCount + " elements > "),hierarchy.firstChild);
-                    
+                   // hierarchy.insertBefore(cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(childUl.childElementCount + " Objects > "),hierarchy.firstChild);
+                    hierarchy.insertBefore(cwCustomerSiteActions.breadCrumbHierarchy.createList(childUl),hierarchy.firstChild);
+                    //hierarchy.insertBefore(childUl,hierarchy.firstChild);
                     return cwCustomerSiteActions.breadCrumbHierarchy.createElement(childUl.firstChild.lastChild,hierarchy);
                 }
             } else { 
@@ -91,6 +101,74 @@
         div.innerText = txt;
         return div;     
     };
+
+    cwCustomerSiteActions.breadCrumbHierarchy.createList = function(childUl){
+        var div = document.createElement('div');
+        div.className = "breadCrumbHierarchyMultipleElement";       
+        
+        var div1 = cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(childUl.childElementCount + " Objects > ");
+        div1.className = "breadCrumbHierarchyMultipleElementHeader";
+
+        var div2 = document.createElement('div');
+        div2.className = "breadCrumbHierarchyMultipleElementListHidden";
+
+        var element;
+        for (var i = 0; i < childUl.childElementCount; i++) {
+            element  = childUl.children[i].firstChild.lastChild;
+            div2.append(element);
+        }
+
+        div1.onclick = function(){
+            if(div2.className === "breadCrumbHierarchyMultipleElementListVisible") {
+                div2.className = "breadCrumbHierarchyMultipleElementListHidden";
+            } else {
+                div2.className = "breadCrumbHierarchyMultipleElementListVisible";
+            }
+        };
+        div2.onclick = function(){
+            div2.className = "breadCrumbHierarchyMultipleElementListHidden";
+        };
+
+        div.append(div1);
+        div.append(div2);
+        return div;      
+    };
+
+    cwCustomerSiteActions.breadCrumbHierarchy.hideList = function(){
+        var lists = document.getElementsByClassName("breadCrumbHierarchyMultipleElementListVisible"); 
+        for(var i = 0; i < lists.length; i++) {
+            lists[i].className  = "breadCrumbHierarchyMultipleElementListHidden";
+        }
+    };
+
+
+    cwCustomerSiteActions.breadCrumbHierarchy.checkHistory = function(hierarchy,history) {
+        if(history === undefined) {
+            history = cwCustomerSiteActions.breadCrumbHierarchy.history.slice(0);
+            var first = true;
+        }
+        var index,child;
+        if(hierarchy) {
+            for(var i = 0; i < hierarchy.children.length; i++) {
+                child = hierarchy.children[i];
+                if(child.tagName === "A") {
+                    index = history.indexOf(child.innerText.replace(" >",""));
+                    if(index !== -1) {
+                        child.className = "historyHierarchyLink";
+                        history.splice(index,1); 
+                    } else {
+                        child.className = "HierarchyLink";
+                    }                   
+                }
+
+                cwCustomerSiteActions.breadCrumbHierarchy.checkHistory(child,history);
+            };
+        }
+        if(first) {
+            cwCustomerSiteActions.breadCrumbHierarchy.history = cwCustomerSiteActions.breadCrumbHierarchy.history.filter(function(i) {return history.indexOf(i) < 0;});
+        }
+    };
+
 
 
     /********************************************************************************
