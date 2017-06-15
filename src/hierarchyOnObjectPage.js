@@ -174,6 +174,7 @@
     /********************************************************************************
     Configs : add trigger for single page
     *********************************************************************************/
+    if(cwAPI.customLibs === undefined) { cwAPI.customLibs = {};}
     if(cwAPI.customLibs.doActionForSingle === undefined) { cwAPI.customLibs.doActionForSingle = {};}
     cwAPI.customLibs.doActionForSingle.breadCrumbHierarchy = cwCustomerSiteActions.breadCrumbHierarchy.create; 
 

@@ -1,6 +1,6 @@
 | **Name** | **cwHierarchyOnObjectPage** | **Version** | 
 | --- | --- | --- |
-| **Updated by** | Mathias PFAUWADEL | 1.0 |
+| **Updated by** | Mathias PFAUWADEL | 2.0 |
 
 
 ## Patch Notes
@@ -32,14 +32,6 @@ For good naming convention, you should use BreadcrumbHierarchy {nameOfTheView}. 
 
 Use the custom Display string on all layout list of the BreadcrumbHierarchy node to define the separator between the differents elements of the hierarchy
 
-### On the js code
-
-
-On this file \Evolve\Site\bin\webDesigner\custom\Marketplace\libs\cwHierarchyOnObjectPage\src\hierarchyOnObjectPage.js, add the different view where you want the hierarchy to apply.
-
-<img src="https://raw.githubusercontent.com/nevakee716/cwHierarchyOnObjectPage/master/screen/4.jpg" alt="Drawing" style="width: 95%;"/>
-
-Ps : this line can also be add in your main.js, if you have multiple deployments
 
 ## Multiple elements
 
