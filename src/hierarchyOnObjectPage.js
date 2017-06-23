@@ -25,7 +25,7 @@
         var hierarchyList = document.getElementsByClassName('cw-list BreadcrumbHierarchy')[0];
         var title = document.getElementsByClassName('page-title')[0];
         var hierarchy = document.createElement('div');
-        var fragment = document.createDocumentFragment();
+        var fragment = document.createElement('div');
         var titletxt = title.innerText;
         
         // Store the hierarchy list for the view
@@ -115,7 +115,7 @@
         var element;
         for (var i = 0; i < childUl.childElementCount; i++) {
             element  = childUl.children[i].firstChild.lastChild;
-            div2.append(element);
+            div2.appendChild(element);
         }
 
         div1.onclick = function(){
@@ -129,8 +129,8 @@
             div2.className = "breadCrumbHierarchyMultipleElementListHidden";
         };
 
-        div.append(div1);
-        div.append(div2);
+        div.appendChild(div1);
+        div.appendChild(div2);
         return div;      
     };
 
