@@ -11,7 +11,11 @@
         for(i in cwAPI.customLibs.doActionForSingle) {
             if(cwAPI.customLibs.doActionForSingle.hasOwnProperty(i)) {
                 if (typeof(cwAPI.customLibs.doActionForSingle[i]) === "function"){
-                    cwAPI.customLibs.doActionForSingle[i](rootNode,currentView.cwView);
+                    if(currentView) {
+                        cwAPI.customLibs.doActionForSingle[i](rootNode,currentView.cwView);
+                    } else {
+                        cwAPI.customLibs.doActionForSingle[i](rootNode,null);
+                    }
                 }   
             }
         }
