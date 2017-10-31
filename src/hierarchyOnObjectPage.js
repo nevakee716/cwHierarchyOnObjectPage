@@ -5,17 +5,14 @@
     Custom Action for Single Page : See Impact here http://bit.ly/2qy5bvB
     *********************************************************************************/
     cwCustomerSiteActions.doActionsForSingle_Custom = function (rootNode) { 
-        var currentView, url,i;
+        var currentView, url,i,cwView;
         currentView = cwAPI.getCurrentView();
 
+        if(currentView) cwView = currentView.cwView;
         for(i in cwAPI.customLibs.doActionForSingle) {
             if(cwAPI.customLibs.doActionForSingle.hasOwnProperty(i)) {
                 if (typeof(cwAPI.customLibs.doActionForSingle[i]) === "function"){
-                    if(currentView) {
-                        cwAPI.customLibs.doActionForSingle[i](rootNode,currentView.cwView);
-                    } else {
-                        cwAPI.customLibs.doActionForSingle[i](rootNode,null);
-                    }
+                    cwAPI.customLibs.doActionForSingle[i](rootNode,cwView);
                 }   
             }
         }
