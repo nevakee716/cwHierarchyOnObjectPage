@@ -61,6 +61,13 @@ div.page-title a.historyHierarchyLink { // Object where we pass
 
 ```
 
+## main.js
+
+By default, the standard main.js can disabled this specific, you create one a custom node, then deploy on this node
+https://help.casewise.com/evolve/v2016-1/main/#Evolve 4.X/customization/Custom-CSS-Javascript.htm?Highlight=main.js
+your custom main.js can be empty.
+
+
 ## Cohabitation with other specific
 
 Here is a list of all the specific and the function they modified. If you have other personnal specific that use the same function, you will need to merge them in to the main.js
