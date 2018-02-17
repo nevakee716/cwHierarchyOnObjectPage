@@ -18,40 +18,75 @@
         }
     };
     cwCustomerSiteActions.breadCrumbHierarchy = {};
-    cwCustomerSiteActions.breadCrumbHierarchy.views = {};
     cwCustomerSiteActions.breadCrumbHierarchy.history = [];
 
+    cwCustomerSiteActions.breadCrumbHierarchy.left = {};
+    cwCustomerSiteActions.breadCrumbHierarchy.left.views = {};
+
+    cwCustomerSiteActions.breadCrumbHierarchy.right = {};
+    cwCustomerSiteActions.breadCrumbHierarchy.right.views = {};
 
     cwCustomerSiteActions.breadCrumbHierarchy.create = function(rootNode){
-        var hierarchyList = document.getElementsByClassName('cw-list BreadcrumbHierarchy')[0];
+        var hierarchyListLeft = document.getElementsByClassName('cw-list BreadcrumbHierarchyLeft')[0];
+        var hierarchyLeft = document.createElement('div');
+        var fragmentLeft = document.createElement('div');
+
+        var hierarchyListRight = document.getElementsByClassName('cw-list BreadcrumbHierarchyRight')[0];
+        var hierarchyRight = document.createElement('div');
+        var fragmentRight = document.createElement('div');
+
         var title = document.getElementsByClassName('page-title')[0];
-        var hierarchy = document.createElement('div');
-        var fragment = document.createElement('div');
         var titletxt = title.innerText;
+        var listToHideLeft,listToHideRight,displayRight = true,displayLeft = true;
         
-        // Store the hierarchy list for the view
-        if(cwCustomerSiteActions.breadCrumbHierarchy.views.hasOwnProperty(cwAPI.getCurrentView().cwView + rootNode.object_id)) { 
-            hierarchy = cwCustomerSiteActions.breadCrumbHierarchy.views[cwAPI.getCurrentView().cwView + rootNode.object_id];
+        // Store the hierarchy list for the view right side
+        if(cwCustomerSiteActions.breadCrumbHierarchy.right.views.hasOwnProperty(cwAPI.getCurrentView().cwView + rootNode.object_id)) { 
+            hierarchyRight = cwCustomerSiteActions.breadCrumbHierarchy.right.views[cwAPI.getCurrentView().cwView + rootNode.object_id];
             // hide the list that may appear when use preview page function
-            var listToHide = document.getElementsByClassName('cw-list BreadcrumbHierarchy');
-            if(listToHide && listToHide.hasOwnProperty(length) && listToHide !== []) {
-                listToHide[0].hidden = true;
+            listToHideRight = document.getElementsByClassName('cw-list breadCrumbHierarchyRight');
+            if(listToHideRight && listToHideRight.hasOwnProperty(length) && listToHideRight !== []) {
+                listToHideRight[0].hidden = true;
             }
-        } else if(hierarchyList) { // Create the hierachyList
-            fragment.appendChild(hierarchyList);
-            hierarchy = cwCustomerSiteActions.breadCrumbHierarchy.createElement(fragment,hierarchy);
-            cwCustomerSiteActions.breadCrumbHierarchy.views[cwAPI.getCurrentView().cwView + rootNode.object_id] = hierarchy;
+        } else if(hierarchyListRight) { // Create the hierachyList
+            fragmentLeft.appendChild(hierarchyListRight);
+            hierarchyRight = cwCustomerSiteActions.breadCrumbHierarchy.createElement(fragmentLeft,hierarchyRight,"right");
+            cwCustomerSiteActions.breadCrumbHierarchy.right.views[cwAPI.getCurrentView().cwView + rootNode.object_id] = hierarchyRight;
         } else {
-            return;
-        }
-        
-        // put the hierarchy on the title
-        if(title && hierarchy) {
-            title.insertBefore(hierarchy,title.firstChild);
+            displayRight = false;
         }
 
-        cwCustomerSiteActions.breadCrumbHierarchy.hideList();
-        cwCustomerSiteActions.breadCrumbHierarchy.checkHistory(hierarchy);
+        // Store the hierarchy list for the view
+        if(cwCustomerSiteActions.breadCrumbHierarchy.left.views.hasOwnProperty(cwAPI.getCurrentView().cwView + rootNode.object_id)) { 
+            hierarchyLeft = cwCustomerSiteActions.breadCrumbHierarchy.left.views[cwAPI.getCurrentView().cwView + rootNode.object_id];
+            // hide the list that may appear when use preview page function
+            listToHideLeft = document.getElementsByClassName('cw-list BreadcrumbHierarchyLeft');
+            if(listToHideLeft && listToHideLeft.hasOwnProperty(length) && listToHideLeft !== []) {
+                listToHideLeft[0].hidden = true;
+            }
+        } else if(hierarchyListLeft) { // Create the hierachyList
+            fragmentRight.appendChild(hierarchyListLeft);
+            hierarchyLeft = cwCustomerSiteActions.breadCrumbHierarchy.createElement(fragmentRight,hierarchyLeft,"left");
+            cwCustomerSiteActions.breadCrumbHierarchy.left.views[cwAPI.getCurrentView().cwView + rootNode.object_id] = hierarchyLeft;
+        } else {
+            displayLeft = false;
+        }
+
+     
+        
+        // put the hierarchy on the title
+        if(title && hierarchyLeft) {
+            title.insertBefore(hierarchyLeft,title.firstChild);
+        }
+        // put the hierarchy on the title
+        if(title && hierarchyRight) {
+            title.appendChild(hierarchyRight);
+        }
+
+        if(displayLeft || displayLeft) {
+            cwCustomerSiteActions.breadCrumbHierarchy.hideList();
+            cwCustomerSiteActions.breadCrumbHierarchy.checkHistory(hierarchyRight);
+            cwCustomerSiteActions.breadCrumbHierarchy.checkHistory(hierarchyLeft);           
+        }
 
         if(cwCustomerSiteActions.breadCrumbHierarchy.history.indexOf(titletxt) === -1) {
             cwCustomerSiteActions.breadCrumbHierarchy.history.push(titletxt);
@@ -59,8 +94,9 @@
 
     };
 
-    cwCustomerSiteActions.breadCrumbHierarchy.createElement = function(elem,hierarchy){
-        var childUl,childLi;
+    cwCustomerSiteActions.breadCrumbHierarchy.createElement = function(elem,hierarchy,direction){
+        var childUl,childLi,bDirection = true;
+        if(direction == "right") bDirection = false;
         if(elem) {
             if(elem.childElementCount === 0) {
                 return hierarchy;
@@ -69,29 +105,44 @@
                 if(childUl && childUl.childElementCount === 1) { // un seul node de hierarchy
                     childLi  = childUl.children[0];
                     if(childLi && childLi.childElementCount === 2) { // un seul element parent
-                        hierarchy.insertBefore(childLi.firstChild,hierarchy.firstChild); 
-                        return cwCustomerSiteActions.breadCrumbHierarchy.createElement(childLi.lastChild,hierarchy);
+                        if(bDirection) hierarchy.insertBefore(childLi.firstChild,hierarchy.firstChild); 
+                        else hierarchy.appendChild(childLi.firstChild); 
+                        return cwCustomerSiteActions.breadCrumbHierarchy.createElement(childLi.lastChild,hierarchy,direction);
                     } else {
                         childLi.hidden = true;
-                        hierarchy.insertBefore(cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(" more than 2 elements in the hierarchy > "),hierarchy.firstChild);
-                        return cwCustomerSiteActions.breadCrumbHierarchy.createElement(childLi.lastChild,hierarchy);
+                        if(bDirection) {
+                            hierarchy.insertBefore(cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(" more than 2 elements in the hierarchy > "),hierarchy.firstChild);
+                        } else {
+                            hierarchy.appendChild(cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(" > more than 2 elements in the hierarchy"));
+                        }
+                        return cwCustomerSiteActions.breadCrumbHierarchy.createElement(childLi.lastChild,hierarchy,direction);
                     }
                 } else if(childUl && childUl.childElementCount === 0) { // fin de la liste
                     return hierarchy;
                 } else {
                     childUl.hidden = true;
-                   // hierarchy.insertBefore(cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(childUl.childElementCount + " Objects > "),hierarchy.firstChild);
-                    hierarchy.insertBefore(cwCustomerSiteActions.breadCrumbHierarchy.createList(childUl),hierarchy.firstChild);
-                    //hierarchy.insertBefore(childUl,hierarchy.firstChild);
-                    return cwCustomerSiteActions.breadCrumbHierarchy.createElement(childUl.firstChild.lastChild,hierarchy);
+                    if(bDirection) {
+                        hierarchy.insertBefore(cwCustomerSiteActions.breadCrumbHierarchy.createList(childUl,bDirection),hierarchy.firstChild);
+                    } else hierarchy.appendChild(cwCustomerSiteActions.breadCrumbHierarchy.createList(childUl,bDirection));
+                    return cwCustomerSiteActions.breadCrumbHierarchy.createElement(childUl.firstChild.lastChild,hierarchy,direction);
                 }
             } else { 
                 elem.hidden = true;
-                hierarchy.insertBefore(cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(" more than 2 parents node in the hierarchy > "),hierarchy.firstChild);
+                if(bDirection) {
+                    hierarchy.insertBefore(cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(" more than 2 parents node in the hierarchy > "),hierarchy.firstChild);
+                } else {
+                    hierarchy.appendChild(cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(" > more than 2 parents node in the hierarchy"));
+                }
+                
                 return hierarchy;
             }
         } else {
-            hierarchy.insertBefore(cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(" You have used edit mode please press F5 > "),hierarchy.firstChild);
+            if(bDirection) {
+                hierarchy.insertBefore(cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(" You have used edit mode please press F5 > "),hierarchy.firstChild);
+            } else {
+                hierarchy.appendChild(cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(" > You have used edit mode please press F5"));
+            }
+            
             return hierarchy;           
         }
         
@@ -103,11 +154,15 @@
         return div;     
     };
 
-    cwCustomerSiteActions.breadCrumbHierarchy.createList = function(childUl){
+    cwCustomerSiteActions.breadCrumbHierarchy.createList = function(childUl,bDirection){
         var div = document.createElement('div');
         div.className = "breadCrumbHierarchyMultipleElement";       
         
-        var div1 = cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(childUl.childElementCount + " Objects > ");
+        var div1
+        
+        if(bDirection) div1 = cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(childUl.childElementCount + " Objects > ");
+        else  div1 = cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(" > " + childUl.childElementCount + " Objects");
+
         div1.className = "breadCrumbHierarchyMultipleElementHeader";
 
         var div2 = document.createElement('div');
