@@ -1,10 +1,11 @@
 | **Name** | **cwHierarchyOnObjectPage** | **Version** | 
 | --- | --- | --- |
-| **Updated by** | Mathias PFAUWADEL | 2.0 |
+| **Updated by** | Mathias PFAUWADEL | 3.0 |
 
 
 ## Patch Notes
 
+* 3.0 : Adding the possibility to display right association (need config change compare to previous version)
 * 2.0 : Adding history feature, and list multiple element
 * 1.0 : 1st version working
 
@@ -22,16 +23,20 @@ Here we have a hierarchy of process related with the association type (is child 
 ### Node in Evolve
 
 <img src="https://raw.githubusercontent.com/nevakee716/cwHierarchyOnObjectPage/master/screen/2.jpg" alt="Drawing" style="width: 95%;"/>
-
+<img src="https://raw.githubusercontent.com/nevakee716/cwHierarchyOnObjectPage/master/screen/2bis.jpg" alt="Drawing" style="width: 95%;"/>
 We will use the node configuration to define the association that we will use to define our hierarchy.
 
 This node configuration need to be done for EACH view where you want to display the hierarchy.
-For good naming convention, you should use BreadcrumbHierarchy {nameOfTheView}. The hierarchy will apply as long as the node id start with BreadcrumbHierarchy. Remember the node id need to be unique. The node can be placed in any tab of the view.
+For good naming convention, you should use BreadcrumbHierarchy{direction} {nameOfTheView}. The hierarchy will apply as long as the node id start with BreadcrumbHierarchy{direction}. Remember the node id need to be unique. The node can be placed in any tab of the view.
 
 <img src="https://raw.githubusercontent.com/nevakee716/cwHierarchyOnObjectPage/master/screen/3.jpg" alt="Drawing" style="width: 95%;"/>
 
 Use the custom Display string on all layout list of the BreadcrumbHierarchy node to define the separator between the differents elements of the hierarchy
 
+
+## Behaviour
+
+Be carefull, the layout doesn't jump and merge, so if you have multiple element at one stage, on the stage after if will only display the association of the first element
 
 ## Multiple elements
 
