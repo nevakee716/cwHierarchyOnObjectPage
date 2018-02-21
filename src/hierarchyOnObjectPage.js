@@ -27,11 +27,11 @@
     cwCustomerSiteActions.breadCrumbHierarchy.right.views = {};
 
     cwCustomerSiteActions.breadCrumbHierarchy.create = function(rootNode){
-        var hierarchyListLeft = document.getElementsByClassName('cw-list BreadcrumbHierarchyLeft')[0];
+        var hierarchyListLeft = document.querySelectorAll('.cw-list.BreadcrumbHierarchyLeft')[0];
         var hierarchyLeft = document.createElement('div');
         var fragmentLeft = document.createElement('div');
 
-        var hierarchyListRight = document.getElementsByClassName('cw-list BreadcrumbHierarchyRight')[0];
+        var hierarchyListRight = document.querySelectorAll('.cw-list.BreadcrumbHierarchyRight')[0];
         var hierarchyRight = document.createElement('div');
         var fragmentRight = document.createElement('div');
 
