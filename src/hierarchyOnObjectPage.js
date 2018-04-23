@@ -43,7 +43,8 @@
         if(cwCustomerSiteActions.breadCrumbHierarchy.right.views.hasOwnProperty(cwAPI.getCurrentView().cwView + rootNode.object_id)) { 
             hierarchyRight = cwCustomerSiteActions.breadCrumbHierarchy.right.views[cwAPI.getCurrentView().cwView + rootNode.object_id];
             // hide the list that may appear when use preview page function
-            listToHideRight = document.getElementsByClassName('cw-list breadCrumbHierarchyRight');
+            
+            listToHideRight = document.getElementsByClassName('cw-list BreadcrumbHierarchyRight');
             if(listToHideRight && listToHideRight.hasOwnProperty(length) && listToHideRight !== []) {
                 listToHideRight[0].hidden = true;
             }
