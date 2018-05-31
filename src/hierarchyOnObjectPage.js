@@ -2,7 +2,7 @@
   "use strict";
 
     /********************************************************************************
-    Custom Action for Single Page : See Impact here http://bit.ly/2qy5bvB
+    Custom Action for Single and Index Page : See Impact here http://bit.ly/2qy5bvB
     *********************************************************************************/
     cwCustomerSiteActions.doActionsForSingle_Custom = function (rootNode) { 
         var currentView, url,i,cwView;
@@ -17,8 +17,24 @@
             }
         }
     };
+
+    cwCustomerSiteActions.doActionsForIndex_Custom = function (rootNode) { 
+        var currentView, url,i,cwView;
+        currentView = cwAPI.getCurrentView();
+
+        if(currentView) cwView = currentView.cwView;
+        for(i in cwAPI.customLibs.doActionForSingle) {
+            if(cwAPI.customLibs.doActionForIndex.hasOwnProperty(i)) {
+                if (typeof(cwAPI.customLibs.doActionForIndex[i]) === "function"){
+                    cwAPI.customLibs.doActionForIndex[i](rootNode,cwView);
+                }   
+            }
+        }
+    };
+
     cwCustomerSiteActions.breadCrumbHierarchy = {};
     cwCustomerSiteActions.breadCrumbHierarchy.history = [];
+    cwCustomerSiteActions.breadCrumbHierarchy.historyPages = []; // comment this line if you want to deactivate the history
 
     cwCustomerSiteActions.breadCrumbHierarchy.left = {};
     cwCustomerSiteActions.breadCrumbHierarchy.left.views = {};
@@ -74,6 +90,37 @@
 
      
         
+
+
+
+        var htmlPagesHistory = cwCustomerSiteActions.breadCrumbHierarchy.historyPages;
+        var samePage = false,pageHTML = {}; 
+        pageHTML.title = titletxt;
+        pageHTML.html = window.location.hash;
+        if(document.getElementsByClassName("HierarchyLink").length > 0) samePage = true;
+        
+        if(displayLeft || displayLeft) {
+            cwCustomerSiteActions.breadCrumbHierarchy.hideList();
+            cwCustomerSiteActions.breadCrumbHierarchy.checkHistory(hierarchyRight);
+            cwCustomerSiteActions.breadCrumbHierarchy.checkHistory(hierarchyLeft);           
+        } else {
+            if(htmlPagesHistory && htmlPagesHistory.length > 0 && samePage === false) {
+                if(htmlPagesHistory.length > 1 && htmlPagesHistory[htmlPagesHistory.length -2].html == pageHTML.html) {
+                    hierarchyRight = cwCustomerSiteActions.breadCrumbHierarchy.createHistoryPageElement(htmlPagesHistory[htmlPagesHistory.length -1],true);
+                    if(htmlPagesHistory.length > 2) {
+                        hierarchyLeft = cwCustomerSiteActions.breadCrumbHierarchy.createHistoryPageElement(htmlPagesHistory[htmlPagesHistory.length -3]);
+                    }
+                    htmlPagesHistory.pop();
+                    htmlPagesHistory.pop();
+                } else {
+                    hierarchyLeft = cwCustomerSiteActions.breadCrumbHierarchy.createHistoryPageElement(htmlPagesHistory[htmlPagesHistory.length -1]);
+                }
+            }
+        }
+
+        if(samePage === false) cwCustomerSiteActions.breadCrumbHierarchy.historyPages.push(pageHTML);
+        
+
         // put the hierarchy on the title
         if(title && hierarchyLeft) {
             title.insertBefore(hierarchyLeft,title.firstChild);
@@ -83,15 +130,13 @@
             title.appendChild(hierarchyRight);
         }
 
-        if(displayLeft || displayLeft) {
-            cwCustomerSiteActions.breadCrumbHierarchy.hideList();
-            cwCustomerSiteActions.breadCrumbHierarchy.checkHistory(hierarchyRight);
-            cwCustomerSiteActions.breadCrumbHierarchy.checkHistory(hierarchyLeft);           
-        }
-
         if(cwCustomerSiteActions.breadCrumbHierarchy.history.indexOf(titletxt) === -1) {
             cwCustomerSiteActions.breadCrumbHierarchy.history.push(titletxt);
         }
+
+
+
+
 
     };
 
@@ -155,11 +200,23 @@
         return div;     
     };
 
+    cwCustomerSiteActions.breadCrumbHierarchy.createHistoryPageElement = function(htmlPage,d){
+        var a = document.createElement('a');
+        a.href = htmlPage.html;
+        if(d === true) a.innerText = " > " + htmlPage.title;
+        else a.innerText = htmlPage.title + " > ";
+        
+        a.className = "HierarchyLink";
+        return a;     
+    };
+
+
+
     cwCustomerSiteActions.breadCrumbHierarchy.createList = function(childUl,bDirection){
         var div = document.createElement('div');
         div.className = "breadCrumbHierarchyMultipleElement";       
         
-        var div1
+        var div1;
         
         if(bDirection) div1 = cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(childUl.childElementCount + " Objects > ");
         else  div1 = cwCustomerSiteActions.breadCrumbHierarchy.createHierarchyWarningMsg(" > " + childUl.childElementCount + " Objects");
@@ -233,6 +290,8 @@
     *********************************************************************************/
     if(cwAPI.customLibs === undefined) { cwAPI.customLibs = {};}
     if(cwAPI.customLibs.doActionForSingle === undefined) { cwAPI.customLibs.doActionForSingle = {};}
+    if(cwAPI.customLibs.doActionForIndex === undefined) { cwAPI.customLibs.doActionForIndex = {};}
     cwAPI.customLibs.doActionForSingle.breadCrumbHierarchy = cwCustomerSiteActions.breadCrumbHierarchy.create; 
+    cwAPI.customLibs.doActionForIndex.breadCrumbHierarchy = cwCustomerSiteActions.breadCrumbHierarchy.create; 
 
 }(cwAPI, jQuery));
