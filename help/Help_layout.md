@@ -1,10 +1,11 @@
 | **Name** | **cwHierarchyOnObjectPage** | **Version** | 
 | --- | --- | --- |
-| **Updated by** | Mathias PFAUWADEL | 3.0 |
+| **Updated by** | Mathias PFAUWADEL | 4.0 |
 
 
 ## Patch Notes
 
+* 4.0 : By default adding the previous page 
 * 3.0 : Adding the possibility to display right association (need config change compare to previous version)
 * 2.0 : Adding history feature, and list multiple element
 * 1.0 : 1st version working
@@ -19,6 +20,15 @@ Here we have a hierarchy of process related with the association type (is child 
 <img src="https://raw.githubusercontent.com/nevakee716/cwHierarchyOnObjectPage/master/screen/1.jpg" alt="Drawing" style="width: 95%;"/>
 
 ## Setup
+
+### History by Default
+
+By default, it will show the previous page on the top bar, if you want to deactivate it please open this file
+cwHierarchyOnObjectPage\src\hierarchyOnObjectPage.js
+and comment this line
+````
+cwCustomerSiteActions.breadCrumbHierarchy.historyPages = []; // comment this line if you want to deactivate the history
+````
 
 ### Node in Evolve
 

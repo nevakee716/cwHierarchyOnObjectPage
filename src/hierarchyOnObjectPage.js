@@ -228,8 +228,21 @@
 
         var element;
         for (var i = 0; i < childUl.childElementCount; i++) {
-            element  = childUl.children[i].firstChild.lastChild;
+            element  = document.createElement('div');
+            element.className = "breadCrumbHierarchyMultipleElementCDS";
+
+            childUl.children[i].firstChild.children[1].onclick = function(){
+                div2.className = "breadCrumbHierarchyMultipleElementListHidden";
+            };
+
+            element.appendChild(childUl.children[i].firstChild.children[1]);
+
+
+
+
+            element.appendChild(childUl.children[i].firstChild.lastChild);
             div2.appendChild(element);
+
         }
 
         div1.onclick = function(){
@@ -239,9 +252,7 @@
                 div2.className = "breadCrumbHierarchyMultipleElementListVisible";
             }
         };
-        div2.onclick = function(){
-            div2.className = "breadCrumbHierarchyMultipleElementListHidden";
-        };
+       
 
         div.appendChild(div1);
         div.appendChild(div2);
