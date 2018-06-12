@@ -1,4 +1,4 @@
-div.page-title div {
+div.page-title > div {
     display : inline-flex;
     font-size : 15px !important;
 }
@@ -8,14 +8,33 @@ div.page-title {
 }
 
 
-div.page-title div div{
+.breadCrumbHierarchyMultipleElement {
     display : block;
     cursor: pointer;
 }
 
-div.page-title div div a {
+.breadCrumbHierarchyMultipleElement a {
     display : block;
 }
+
+
+
+.BreadcrumbHierarchyLeft, .BreadcrumbHierarchyRight {
+    display : flex;
+    font-size : 12px;
+}
+
+
+.BreadcrumbHierarchyLeft i.fa , .BreadcrumbHierarchyRight i.fa{
+    font-size : 12px!important;
+}
+
+.breadCrumbHierarchyMultipleElementCDS {
+    display : flex;
+    font-size : 14px;
+}    
+
+
 
 div.page-title div.breadCrumbHierarchyMultipleElementListHidden{
     display: none;
@@ -23,7 +42,7 @@ div.page-title div.breadCrumbHierarchyMultipleElementListHidden{
 }
 
 div.page-title div.breadCrumbHierarchyMultipleElementListVisible {
-	display: block;
+    display: block;
     visibility: visible;
     background-color: #ECEFF1;
     box-shadow: 1px 3px 3px #BDBDBD;
@@ -31,10 +50,15 @@ div.page-title div.breadCrumbHierarchyMultipleElementListVisible {
 }
 
 div.page-title a.HierarchyLink {
-    font-size: 12px;
+    font-size : 12px;
+}
+
+a.HierarchyLink {
+    font-size : 12px;
 }
 
 div.page-title a.historyHierarchyLink {
-	color: red;
+    font-size : 12px;
+    color: red;
 }
 
