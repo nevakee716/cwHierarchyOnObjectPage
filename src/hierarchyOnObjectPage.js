@@ -62,7 +62,7 @@
             
             listToHideRight = document.getElementsByClassName('cw-list BreadcrumbHierarchyRight');
             if(listToHideRight && listToHideRight.hasOwnProperty(length) && listToHideRight !== []) {
-                listToHideRight[0].hidden = true;
+                listToHideRight[0].style.display = "none";
             }
         } else if(hierarchyListRight) { // Create the hierachyList
             fragmentLeft.appendChild(hierarchyListRight);
@@ -78,7 +78,7 @@
             // hide the list that may appear when use preview page function
             listToHideLeft = document.getElementsByClassName('cw-list BreadcrumbHierarchyLeft');
             if(listToHideLeft && listToHideLeft.hasOwnProperty(length) && listToHideLeft !== []) {
-                listToHideLeft[0].hidden = true;
+                listToHideLeft[0].style.display = "none";
             }
         } else if(hierarchyListLeft) { // Create the hierachyList
             fragmentRight.appendChild(hierarchyListLeft);
