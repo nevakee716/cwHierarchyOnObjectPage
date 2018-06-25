@@ -23,7 +23,7 @@
         currentView = cwAPI.getCurrentView();
 
         if(currentView) cwView = currentView.cwView;
-        for(i in cwAPI.customLibs.doActionForSingle) {
+        for(i in cwAPI.customLibs.doActionForIndex) {
             if(cwAPI.customLibs.doActionForIndex.hasOwnProperty(i)) {
                 if (typeof(cwAPI.customLibs.doActionForIndex[i]) === "function"){
                     cwAPI.customLibs.doActionForIndex[i](rootNode,cwView);
