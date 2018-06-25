@@ -100,6 +100,7 @@
         pageHTML.html = window.location.hash;
         if (document.getElementsByClassName("HierarchyLink").length > 0) {
             historyAlreadyExist = true;
+            samePage = true;
         }
         if (htmlPagesHistory && htmlPagesHistory.length > 1 && titletxt === htmlPagesHistory[htmlPagesHistory.length - 1].title) {
             samePage = true;
