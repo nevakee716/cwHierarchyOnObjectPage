@@ -1,10 +1,11 @@
 | **Name** | **cwHierarchyOnObjectPage** | **Version** | 
 | --- | --- | --- |
-| **Updated by** | Mathias PFAUWADEL | 4.0 |
+| **Updated by** | Mathias PFAUWADEL | 4.1 |
 
 
 ## Patch Notes
 
+* 4.1 : Adding option to remove the diagram popout on title
 * 4.0 : By default adding the previous page 
 * 3.0 : Adding the possibility to display right association (need config change compare to previous version)
 * 2.0 : Adding history feature, and list multiple element
@@ -25,10 +26,18 @@ Here we have a hierarchy of process related with the association type (is child 
 
 By default, it will show the previous page on the top bar, if you want to deactivate it please open this file
 cwHierarchyOnObjectPage\src\hierarchyOnObjectPage.js
-and comment this line
+and change the value to false
 ````
-cwCustomerSiteActions.breadCrumbHierarchy.historyPages = []; // comment this line if you want to deactivate the history
+historyBrowser = true; 
 ````
+### PopOut
+If you use the customDisplayStringEnhenced you can have diagramPopOut in the title, if you want to deactivate it please open this file
+cwHierarchyOnObjectPage\src\hierarchyOnObjectPage.js
+and change the value to false
+````
+removeDiagramPopOut= true; 
+````
+
 
 ### Node in Evolve
 
