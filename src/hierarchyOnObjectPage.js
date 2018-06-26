@@ -1,5 +1,10 @@
 (function(cwApi, $) {
     "use strict";
+    // config
+    var removeDiagramPopOut = true,
+        historyBrowser = true;
+
+
 
     /********************************************************************************
     Custom Action for Single and Index Page : See Impact here http://bit.ly/2qy5bvB
@@ -34,7 +39,8 @@
 
     cwCustomerSiteActions.breadCrumbHierarchy = {};
     cwCustomerSiteActions.breadCrumbHierarchy.history = [];
-    cwCustomerSiteActions.breadCrumbHierarchy.historyPages = []; // comment this line if you want to deactivate the history
+    if (historyBrowser) cwCustomerSiteActions.breadCrumbHierarchy.historyPages = [];
+
 
     cwCustomerSiteActions.breadCrumbHierarchy.left = {};
     cwCustomerSiteActions.breadCrumbHierarchy.left.views = {};
@@ -113,15 +119,15 @@
             cwCustomerSiteActions.breadCrumbHierarchy.checkHistory(hierarchyLeft);
         } else {
             if (htmlPagesHistory && htmlPagesHistory.length > 0 && historyAlreadyExist === false) {
-                if (htmlPagesHistory.length > (1+i) && htmlPagesHistory[htmlPagesHistory.length - (2+i)].html == pageHTML.html) {
-                    hierarchyRight = cwCustomerSiteActions.breadCrumbHierarchy.createHistoryPageElement(htmlPagesHistory[htmlPagesHistory.length - (1+i)], true);
-                    if (htmlPagesHistory.length > (2+i)) {
-                        hierarchyLeft = cwCustomerSiteActions.breadCrumbHierarchy.createHistoryPageElement(htmlPagesHistory[htmlPagesHistory.length - (3+i)]);
+                if (htmlPagesHistory.length > (1 + i) && htmlPagesHistory[htmlPagesHistory.length - (2 + i)].html == pageHTML.html) {
+                    hierarchyRight = cwCustomerSiteActions.breadCrumbHierarchy.createHistoryPageElement(htmlPagesHistory[htmlPagesHistory.length - (1 + i)], true);
+                    if (htmlPagesHistory.length > (2 + i)) {
+                        hierarchyLeft = cwCustomerSiteActions.breadCrumbHierarchy.createHistoryPageElement(htmlPagesHistory[htmlPagesHistory.length - (3 + i)]);
                     }
                     htmlPagesHistory.pop();
                     htmlPagesHistory.pop();
                 } else {
-                    hierarchyLeft = cwCustomerSiteActions.breadCrumbHierarchy.createHistoryPageElement(htmlPagesHistory[htmlPagesHistory.length - (1+i)]);
+                    hierarchyLeft = cwCustomerSiteActions.breadCrumbHierarchy.createHistoryPageElement(htmlPagesHistory[htmlPagesHistory.length - (1 + i)]);
                 }
             }
         }
@@ -138,8 +144,12 @@
             title.appendChild(hierarchyRight);
         }
 
+
         if (cwCustomerSiteActions.breadCrumbHierarchy.history.indexOf(titletxt) === -1) {
             cwCustomerSiteActions.breadCrumbHierarchy.history.push(titletxt);
+        }
+        if (removeDiagramPopOut == true) {
+            $("div.page-title span.cdsEnhancedDiagramPopOutIcon").remove();
         }
 
 
