@@ -132,7 +132,7 @@
             }
         }
 
-        if (samePage === false || historyAlreadyExist == false) cwCustomerSiteActions.breadCrumbHierarchy.historyPages.push(pageHTML);
+        if (samePage === false && historyAlreadyExist == false) cwCustomerSiteActions.breadCrumbHierarchy.historyPages.push(pageHTML);
 
 
         // put the hierarchy on the title
